@@ -5,7 +5,7 @@
 ## How to Run the Game
 Download or clone the repository and run the index.html file in any browser
 
-##How to Play
+## How to Play
 
 When the game loads choose your preferred avatar by clicking on any of the characters
 The aim of the game is to get your avatar to the river while avoiding enemy bugs
