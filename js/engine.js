@@ -13,17 +13,21 @@
  * writing app.js a little simpler to work with.
  */
 
-var Engine = (function(global) {
+if(window.modalstate==true){
+    Engine();  
+    console.log(window.modalstate)
+}  
+var Engine = function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas element's height/width and add it to the DOM.
      */
-    var doc = global.document,
-        win = global.window,
+    
+    var doc = this.document,
+        win = this.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
-
     canvas.width = 505;
     canvas.height = 606;
     doc.body.appendChild(canvas);
@@ -31,32 +35,36 @@ var Engine = (function(global) {
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
-    function main() {
-        /* Get our time delta information which is required if your game
-         * requires smooth animation. Because everyone's computer processes
-         * instructions at different speeds we need a constant value that
-         * would be the same for everyone (regardless of how fast their
-         * computer is) - hurray time!
-         */
-        var now = Date.now(),
-            dt = (now - lastTime) / 1000.0;
+    
+        function main() {
+            /* Get our time delta information which is required if your game
+             * requires smooth animation. Because everyone's computer processes
+             * instructions at different speeds we need a constant value that
+             * would be the same for everyone (regardless of how fast their
+             * computer is) - hurray time!
+             */
 
-        /* Call our update/render functions, pass along the time delta to
-         * our update function since it may be used for smooth animation.
-         */
-        update(dt);
-        render();
+            var now = Date.now(),
+                dt = (now - lastTime) / 1000.0;
+    
+            /* Call our update/render functions, pass along the time delta to
+             * our update function since it may be used for smooth animation.
+             */
+            update(dt);
+            render();
+    
+            /* Set our lastTime variable which is used to determine the time delta
+             * for the next time this function is called.
+             */
+            lastTime = now;
+    
+            /* Use the browser's requestAnimationFrame function to call this
+             * function again as soon as the browser is able to draw another frame.
+             */
+            win.requestAnimationFrame(main);
+        }
 
-        /* Set our lastTime variable which is used to determine the time delta
-         * for the next time this function is called.
-         */
-        lastTime = now;
-
-        /* Use the browser's requestAnimationFrame function to call this
-         * function again as soon as the browser is able to draw another frame.
-         */
-        win.requestAnimationFrame(main);
-    }
+    
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
@@ -66,6 +74,7 @@ var Engine = (function(global) {
         reset();
         lastTime = Date.now();
         main();
+          
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -173,7 +182,8 @@ var Engine = (function(global) {
         './images/water-block.png',
         './images/grass-block.png',
         './images/enemy-bug.png',
-        './images/char-boy.png'
+        './images/char-boy.png',
+        './images/char-pink-girl.png'
     ]);
     Resources.onReady(init);
 
@@ -181,7 +191,8 @@ var Engine = (function(global) {
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
-    global.ctx = ctx;
+    this.ctx = ctx;
     window.canvas=canvas
 
-})(this);
+};
+window.Engine=Engine;

@@ -1,3 +1,24 @@
 body {
     text-align: center;
 }
+#modal{
+    display: flex;
+    position: absolute;
+    flex-wrap: wrap;
+    top:30%;
+    left:30%;
+    width:250px;
+    height:300px;
+    z-index: 100;
+}
+#modal div{
+    display:block;
+    width:50%;
+    padding:10px;
+    height:100px;
+
+}
+#modal div img{
+    width:100%;
+    height:auto;
+}
