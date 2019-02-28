@@ -182,5 +182,6 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    window.canvas=canvas
 
 })(this);

@@ -7,7 +7,7 @@ var Enemy = function() {
     // a helper we've provided to easily load images
     this.sprite = './images/enemy-bug.png';
     this.x=0;
-    this.speed();
+    this.speedHandler();
     this.initLocation();
     
 };
@@ -16,9 +16,9 @@ Enemy.prototype.initLocation=function(){
     this.y=enemyLocations;
     enemyLocations+=75;
 }
-Enemy.prototype.speed=function(){
+Enemy.prototype.speedHandler=function(){
     this.speed=Math.floor(Math.random()*300);
-    if(this.speed<30) this.initLocation.speed()
+    if(this.speed<30) this.speedHandler()
 }
 
 // Update the enemy's position, required method for game
@@ -28,6 +28,10 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x+= this.speed*dt;
+    if(this.x>canvas.width){
+        this.speedHandler();
+        this.x=0;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -56,18 +60,51 @@ Player.prototype.initLocation=function(){
     if(this.x<=101||this.x>=303){
         this.initLocation()
     }
+    this.reset=this.x;
 }
 Player.prototype.render=function(){
     ctx.drawImage(Resources.get(this.sprite),this.x,this.y)
 }
 Player.prototype.update=function(dt){
+    if(this.y<=0){
+        setTimeout(()=>{
+        this.y=415;
+        this.x=this.reset
+    },100)}
+    
+
+    
 
 }
-const player= new Player();
-const allEnemies=[];
-while(allEnemies.length<3){
-    allEnemies.push(new Enemy())
+Player.prototype.handleInput=function(direction){
+    if(direction=='left'){
+        if(this.x<=20) return
+        this.x-=30;
+    }
+    if(direction=='right'){
+        if(this.x>=350) return
+        this.x+=30;
+    }
+    if(direction=='up'){
+        if(this.y<=0) { 
+           return 
+        }
+        this.y-=60;
+    }
+    if(direction=='down'){
+        if(this.y>=415) return
+        this.x-=30;
+    }
 }
+const allEnemies=[];
+function initializeEnemies(){
+    while(allEnemies.length<3){
+        allEnemies.push(new Enemy())
+    }
+}
+const player= new Player();
+initializeEnemies();
+
 window.player=player;
 window.allEnemies=allEnemies;
 document.addEventListener('keyup', function(e) {
