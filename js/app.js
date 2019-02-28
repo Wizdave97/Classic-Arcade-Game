@@ -5,8 +5,21 @@ var Enemy = function() {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = './images/enemy-bug.png';
+    this.x=0;
+    this.speed();
+    this.initLocation();
+    
 };
+let enemyLocations=75;
+Enemy.prototype.initLocation=function(){
+    this.y=enemyLocations;
+    enemyLocations+=75;
+}
+Enemy.prototype.speed=function(){
+    this.speed=Math.floor(Math.random()*300);
+    if(this.speed<30) this.initLocation.speed()
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -14,6 +27,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x+= this.speed*dt;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -21,11 +35,12 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+var Player=function(){
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-
-
+    this.sprite='./images/char-boy.png'
+    this.initLocation();
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -34,6 +49,27 @@ Enemy.prototype.render = function() {
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
+}
+Player.prototype.initLocation=function(){
+    this.y=415;
+    this.x=Math.floor(Math.random()*505);
+    if(this.x<=101||this.x>=303){
+        this.initLocation()
+    }
+}
+Player.prototype.render=function(){
+    ctx.drawImage(Resources.get(this.sprite),this.x,this.y)
+}
+Player.prototype.update=function(dt){
+
+}
+const player= new Player();
+const allEnemies=[];
+while(allEnemies.length<3){
+    allEnemies.push(new Enemy())
+}
+window.player=player;
+window.allEnemies=allEnemies;
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
