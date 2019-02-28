@@ -71,10 +71,14 @@ Player.prototype.update=function(dt){
         this.y=415;
         this.x=this.reset
     },100)}
-    
-
-    
-
+    allEnemies.map((enemy)=>{
+        if (this.x < enemy.x + 50 &&
+            this.x + 50 > enemy.x &&
+            this.y < enemy.y + 50 &&
+            50 + this.y > enemy.y){
+                this.initLocation()
+            }
+    })
 }
 Player.prototype.handleInput=function(direction){
     if(direction=='left'){
